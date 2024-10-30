@@ -1,0 +1,43 @@
+#@@INSTALLATION OF Kubectl
+
+# This overwrites any existing configuration in /etc/yum.repos.d/kubernetes.repo
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.key
+EOF
+
+sudo yum install -y kubectl
+
+dnf install -y {kubelet,kubeadm,kubectl} --disableexcludes=Kubernetes
+
+***********************************************************************************
+
+#@@INSTALLATION OF DOCKER
+
+sudo dnf remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
+
+sudo dnf -y install dnf-utils
+sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+sudo dnf install docker-ce docker-ce-cli containerd.io
+
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl status docker
+docker --version
+
+***********************************************************************************
+#@@INSTALLATION OF MINIKUBE
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+minikube start --force
+
+
+

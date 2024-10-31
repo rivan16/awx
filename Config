@@ -14,6 +14,12 @@ sudo dnf install -y kubectl
 sudo dnf install -y {kubelet,kubeadm,kubectl} --disableexcludes=Kubernetes
 kubectl version --client
 
+IF ERROR INSTALL THIS FIRST:
+date
+sudo dnf install -y chrony
+sudo systemctl enable --now chronyd
+sudo chronyc sources -v
+
 ***********************************************************************************
 
 #@@INSTALLATION OF DOCKER

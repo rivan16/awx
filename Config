@@ -1,3 +1,32 @@
+##@@FIREWALL
+sudo setenforce 0
+
+sudo sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/sysconfig/selinux
+
+sestatus
+
+sudo firewall-cmd --permanent --add-port=6443/tcp
+sudo firewall-cmd --permanent --add-port=2379-2380/tcp
+sudo firewall-cmd --permanent --add-port=10250/tcp
+sudo firewall-cmd --permanent --add-port=10251/tcp
+sudo firewall-cmd --permanent --add-port=10259/tcp
+sudo firewall-cmd --permanent --add-port=10257/tcp
+sudo firewall-cmd --permanent --add-port=179/tcp
+sudo firewall-cmd --permanent --add-port=443/tcp
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --permanent --add-port=8042/tcp
+sudo firewall-cmd --permanent --add-port=4789/udp
+
+sudo firewall-cmd --permanent --add-port=179/tcp
+sudo firewall-cmd --permanent --add-port=10250/tcp
+sudo firewall-cmd --permanent --add-port=30000-32767/tcp
+sudo firewall-cmd --permanent --add-port=4789/udp
+
+sudo firewall-cmd --reload
+
+
+**************************************************************************************
+
 #@@INSTALLATION OF Kubectl
 
 # This overwrites any existing configuration in /etc/yum.repos.d/kubernetes.repo
@@ -54,11 +83,76 @@ minikube logs
 minikube stop
 minikube delete
 minikube start --force
+minikube start --driver=none --force
 
 #CHANGE THE IP OF MINIKUBE
 minikube stop
 minikube start --driver=docker --listen-address=192.168.108.141 --force
 
+************************************************************************
+#@@INSTALL CRI-DOCKERD
+curl -L https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.4/cri-dockerd-0.3.4.amd64.tgz -o cri-dockerd.tgz
+tar -xzf cri-dockerd.tgz
+sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
+sudo chmod +x /usr/local/bin/cri-dockerd
+cri-dockerd --version
 
+***********************************************************************
+#@@ INSTALL ANSIBLE
+dnf update -y
+
+dnf install epel-release -y
+
+dnf install python
+
+dnf install ansible -y
+
+dnf install telnet -y
+
+dnf install nano -y
+
+dnf install python3-netaddr -y
+
+ansible-galaxy collection install cisco.ios
+*******************************************************************
+@CENTOS - DON'T FORGET TO DO THIS
+
+chmod -R 777 /etc/ansible/
+*******************************************************************
+
+nano /etc/ssh/ssh_config
+
+
+Include /etc/ssh/ssh_config.d/*.conf
+HostKeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+
+
+**********************************************************************
+
+nano /etc/ssh/sshd_config
+
+Include /etc/ssh/sshd_config.d/*.conf
+HostKeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+
+************************************************************************
+dnf install python3-pip
+pip3 install paramiko
+
+***********************************************************************
+
+nano ansible.cfg
+
+[paramiko_connection]
+look_for_keys = False
+
+***********************************************************************
+
+ansible-config dump --only-changed -t all
+
+***********************************************************************
+sudo systemctl restart sshd
+update-crypto-policies --set LEGACY
 
 

@@ -155,4 +155,8 @@ ansible-config dump --only-changed -t all
 sudo systemctl restart sshd
 update-crypto-policies --set LEGACY
 
+**********************************************************************
+@@AWX
+https://ansible.readthedocs.io/projects/awx-operator/en/latest/installation/basic-install.html
+
 

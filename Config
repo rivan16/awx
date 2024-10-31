@@ -38,6 +38,13 @@ docker --version
 
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
+ls -l /usr/local/bin/minikube
+sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+sudo chmod +x /usr/local/bin/minikube
+echo $PATH
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
+source ~/.bashrc
+minikube version
 minikube start --force
 minikube status
 kubectl config use-context minikube

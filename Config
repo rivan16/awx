@@ -74,6 +74,8 @@ echo $PATH
 echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
 source ~/.bashrc
 minikube version
+minikube start --service-cluster-ip-range 192.168.108.0/24
+minikube start --cni=flannel --kubernetes-version=v1.25.0 --extra-config=kubelet.network-plugin=cni --extra-config=kubelet.cluster-cidr=192.168.108.0/24 --force
 minikube start --force
 minikube status
 kubectl config use-context minikube
@@ -156,7 +158,10 @@ sudo systemctl restart sshd
 update-crypto-policies --set LEGACY
 
 **********************************************************************
-@@AWX
+@@AWX 2.19.1
+
+git clone https://github.com/ansible/awx-operator
+
 https://ansible.readthedocs.io/projects/awx-operator/en/latest/installation/basic-install.html
 
 

@@ -1,0 +1,9 @@
+https://github.com/semaphoreui/semaphore/releases
+
+wget https://github.com/ansible-semaphore/semaphore/releases/download/v2.10.35/semaphore_2.10.35_linux_amd64.rpm
+sudo dnf install semaphore_2.10.35_linux_amd64.rpm
+semaphore --version
+semaphore setup
+sudo systemctl start semaphore
+sudo systemctl enable semaphore
+http://<server-ip>:3000

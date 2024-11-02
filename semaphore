@@ -1,4 +1,5 @@
 https://github.com/semaphoreui/semaphore/releases
+https://www.youtube.com/watch?v=CltoVfeRdoM
 
 wget https://github.com/ansible-semaphore/semaphore/releases/download/v2.10.35/semaphore_2.10.35_linux_amd64.rpm
 sudo dnf install semaphore_2.10.35_linux_amd64.rpm
@@ -7,3 +8,14 @@ semaphore setup
 sudo systemctl start semaphore
 sudo systemctl enable semaphore
 http://<server-ip>:3000
+
+*****************************************************************************
+sudo mariadb
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.108.131' IDENTIFIED BY 'C1sc0123' WITH GRANT OPTION;
+CREATE USER 'semaphore_user'@'192.168.108.131' IDENTIFIED BY 'C1sc0123';
+GRANT ALL PRIVILEGES ON semaphore_db.* TO 'semaphore_user'@'192.168.108.131';
+FLUSH PRIVILEGES;
+semaphore server --config /etc/semaphore/config.json
+sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=3000/udp --permanent
+sudo firewall-cmd --reload
